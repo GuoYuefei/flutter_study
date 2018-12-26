@@ -57,11 +57,8 @@ class PhotoDisplayState extends State<PhotoDisplay> {
     for(int i = 0; i < pnum; i++) {
       plist.add(3);
     }
-    setState(() {
-      image1 = _randomPicture();
-      image2 = _randomPicture(); 
-          
-        });
+    image1 = PhotoDisplayState._randomPicture(pNum);
+    image2 = PhotoDisplayState._randomPicture(pNum);    
   }
 
   @override
@@ -122,6 +119,9 @@ class PhotoDisplayState extends State<PhotoDisplay> {
     if(icon2 == Icons.favorite) return;    //两者不能同时喜欢
     setState(() {
       icon1 = _pressFavi(icon1);
+      image1 = _randomPicture(pNum, 
+        exception: image2,
+      );
     });
   }
 
@@ -133,12 +133,20 @@ class PhotoDisplayState extends State<PhotoDisplay> {
   }
 
   //需要一个随机加载图片的函数
-  Image _randomPicture({Image exception = null}) {
+  static Image _randomPicture(int pnum, {Image exception = null}) {
     //TODO 先完成随机加载图片
     var random = Random();
-    int tempI = random.nextInt(pNum)+1;
-    return Image(
+    int tempI = random.nextInt(pnum) + 1;
+    Image igs = Image(
       image: AssetImage('assets/images/$tempI.jpg')
     );
+    // TODO 不能使用这种方式消除重复图片
+    while(igs == exception) {
+      tempI = random.nextInt(pnum) + 1;
+      igs = Image(
+        image: AssetImage('assets/images/$tempI.jpg')
+      );
+    }
+    return igs;
   }
 }
