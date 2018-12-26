@@ -9,15 +9,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: Counter(),
@@ -32,12 +23,72 @@ class Counter extends StatefulWidget {
 }
 
 class CounterState extends State<Counter> {
+  int counter = 0;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('counter by myself'),
+      ),
+      body: new Center(
+        child: new Column(
+          children: <Widget>[
+            new Text(
+              'the counter is: ', 
+              style: Theme.of(context).textTheme.headline,
+              ),
+            new Text(
+            '$counter',
+            style: Theme.of(context).textTheme.display1,
+            ),
+            new RaisedButton(
+              child: Icon(Icons.lens),
+              onPressed: () => setState(() => counter--)
+              ,
+            ),
+            new FlatButton(
+              child: Icon(Icons.open_in_new),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return NewRouter();
+                  }
+                ));
+              },
+            )
+          ],
+        )
+      ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: increCounter,
+        child: new Icon(Icons.add),
+      ),
+    );
+  }
+
+  //增加counter
+  void increCounter() {
+    setState(() {
+      counter++;   
+    });
   }
 
 }
 
+class NewRouter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Router'),
+      ),
+      body: Center(
+        child: Text('This is new route'),
+      ),
+    );
+  }
+
+}
 
